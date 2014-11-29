@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sqlMap">
+
+	<!-- Insert example, using the Account parameter class <insert id="insBoard" 
+		parameterClass="spring.board.BoardDTO"> insert into springBoard ( num, author, 
+		title, content, writeday) values ( #num#, #author#, #title#, #content#, sysdate) 
+		</insert> -->
+	<insert id="empIns">
+		insert into emp 
+		(emp_no, emp_id, emp_name, emp_pwd, emp_hiredate, emp_depno, emp_jobno, emp_total)
+		values (#emp_no#, #emp_id#, #emp_name#, #emp_pwd#, #emp_hiredate#, #emp_depno#, #emp_jobno#, #emp_total#)	</insert>
+	<insert id="saveDay" parameterClass="spring.emp.DayDTO">
+		insert into day(
+		day_empno,
+		day_empname,
+		day_today,
+		day_start,
+		day_res,
+		day_depno,
+		day_jobno,
+		day_id
+		)values(
+		#day_empno#, #day_empname#,
+		to_char(sysdate, 'yyyy/mm/dd'), to_char(sysdate, 'hh24:mi'),
+		#day_res# , #day_depno#, #day_jobno#, seq.nextval
+		)
+
+	</insert>
+
+	<insert id="saveOvertask" parameterClass="spring.emp.OvertaskDTO">
+		insert into overtask(
+		TASK_DEPNO  ,
+		TASK_EMPNO	,
+		TASK_JOBNO  ,
+		TASK_EMPNAME	,
+		TASK_STARTDAY	,
+		TASK_START		,
+		TASK_CONT		,
+		TASK_RES		
+		)values(
+		#task_depno#, #task_empno#, #task_jobno#, #task_empname#,
+		#task_startday#, #task_start#,
+		#task_cont# , #task_res#
+		)
+
+	</insert>
+	
+	<insert id="saveOverwork" parameterClass="HashMap">
+		insert into overwork(
+		OVER_EMPNO  ,
+		OVER_JOBNO	,
+		OVER_DEPNO  ,
+		OVER_EMPNAME,
+		OVER_CURYEAR,
+		OVER_CURMONTH,
+		OVER_MAX		
+
+		)values(
+		#empno#, #jobno#, #depno#, #empname#,
+		#curyear#, #curmonth#,
+		#max#)
+
+	</insert>
+	
+	<select id="selid" resultClass="int" parameterClass="spring.emp.EmpDTO">
+		select count(*) from emp where emp_id = #emp_id#
+
+	</select>
+
+	<select id="selpwd" resultClass="String" parameterClass="spring.emp.EmpDTO">
+		select emp_pwd from emp where emp_id = #emp_id#
+
+	</select>
+
+	<select id="selinfo" resultClass="spring.emp.EmpDTO">
+		select * from emp where emp_id = #emp_id# and emp_pwd = #emp_pwd#
+
+	</select>
+
+
+	<select id="admid" resultClass="int" parameterClass="spring.emp.EmpDTO">
+		select count(*) from emp_admin where admin_id = #emp_id#
+
+	</select>
+
+	<select id="admpwd" resultClass="String" parameterClass="spring.emp.EmpDTO">
+		select admin_pwd from emp_admin where admin_id = #emp_id#
+
+	</select>
+
+	<select id="adminfo" resultClass="spring.emp.AdmDTO">
+		select * from emp_admin where admin_id = #emp_id# and admin_pwd = #emp_pwd#
+	</select>
+
+	<select id="getmonthinfo" resultClass="spring.emp.DayDTO" parameterClass="spring.emp.EmpDTO">
+		SELECT * FROM day where DAY_EMPNO = #emp_no# AND day_vacation IS NULL
+	</select>
+	
+	<select id="getOvertask" resultClass="spring.emp.OvertaskDTO">
+		select * from overtask where task_empno = #emp_no# order by task_startday desc
+	</select>
+	
+	<select id="getOvertaskAll" resultClass="spring.emp.OvertaskDTO">
+		select * from overtask where task_depno = #emp_depno# order by task_startday desc
+	</select>
+	
+	<select id="checksameOvertask" resultClass="int">
+		select count(*) from overtask where 
+		task_empno = #task_empno# and task_startday = #task_startday# and 
+		task_res in('0','1')
+	</select>
+	
+	<select id="checktimeOvertask" resultClass="int">
+		select count(*) from overtask where 
+		task_empno = #task_empno# and task_startday = #task_startday# and 
+		task_start = #task_start#
+	</select>
+	
+	
+	<select id="getJobname" resultClass="String">
+		select job_name from job where job_no = #day_jobno#
+	</select>
+	
+	<select id="getDepname" resultClass="String">
+		select dep_name from dep where dep_no = #day_depno#
+	</select>
+	
+	<select id="getAttendall" resultClass="spring.emp.DayDTO">
+		select * from day 
+		where day_depno = #emp_depno# 
+		AND day_start is not null
+	</select>
+		       <update id="refuseTask" parameterClass="spring.emp.taskDTO">
+    update overtask set task_res = 4 where 
+    						task_empno = #empno# and
+    						task_startday = #startday# and
+    						task_start = #start#
+
+  </update>
+  
+	        <update id="updateTask" parameterClass="spring.emp.taskDTO">
+    update overtask set task_res = 1 where 
+    						task_empno = #empno# and
+    						task_startday = #startday# and
+    						task_start = #start#
+
+  </update>
+  
+     <update id="changeATT">
+    update day set day_start = #day_start# where 
+    						day_empno = #day_empno# and
+    						day_today = #day_today#
+    					
+  </update>
+  
+  	<delete id="deleteATT" parameterClass="spring.emp.DayDTO">
+		DELETE FROM day WHERE day_empno = #day_empno# and 
+								day_today = #day_today# 
+	</delete>
+  
+
+  	        <update id="holdontask" parameterClass="spring.emp.taskDTO">
+    update overtask set task_res = 3,
+    						task_finishday = to_char(sysdate, 'yyyy/mm/dd'),
+    						task_finish =  to_char(sysdate, 'hh24:mi')  
+    						
+    						
+    						where 
+    						
+    						task_empno = #empno# and
+    						task_startday = #startday# and
+    						task_start = #start#
+
+  </update>
+      <update id="finishTask">
+    update overtask set 	task_res = 2,
+    						task_finishday = to_char(sysdate, 'yyyy/mm/dd'),
+    						task_finish =  to_char(sysdate, 'hh24:mi') 
+    						
+    						where 
+    						
+    						task_empno = #empno# and
+    						task_startday = #startday# and
+    						task_start = #start#
+
+  </update>
+  
+
+        <update id="finishholdTask">
+    update overtask set 	task_res = 2
+    			
+    						where 
+    						
+    						task_empno = #empno# and
+    						task_startday = #startday# and
+    						task_start = #start#
+
+  </update>
+  
+      <update id="updTotalWork">
+    update overwork set over_max = over_max + #max#  where 
+    										over_empno = #empno# and
+											over_curyear = #curyear# and
+											over_curmonth = #curmonth#
+
+  </update>
+  
+  	      <update id="updMaxWork">
+	      
+    update overwork set over_max = 1200 where over_empno = #empno# and
+											over_curyear = #curyear# and
+											over_curmonth = #curmonth#
+
+  </update>
+  
+	<select id="selAllWork" resultClass="spring.emp.OverworkDTO">
+		select * from overwork where 
+		over_empno = #emp_no#
+							
+	</select>
+	
+	<select id="selOverwork" resultClass="int" parameterClass="spring.emp.workDTO">
+		select count(*) from overwork where over_empno = #empno# and
+											over_curyear = #curyear# and
+											over_curmonth = #curmonth#
+											
+									
+	</select>
+	
+	
+	<select id="getMaxwork" resultClass="int" parameterClass="spring.emp.workDTO">
+		select over_max from overwork where over_empno = #empno# and
+											over_curyear = #curyear# and
+											over_curmonth = #curmonth#
+											
+									
+	</select>
+	
+	<select id="getMaxworkcount" resultClass="int" parameterClass="spring.emp.workDTO">
+		select count(*) from overwork where over_empno = #empno# and
+											over_curyear = #curyear# and
+											over_curmonth = #curmonth#
+											
+									
+	</select>
+	
+	<select id="getNow" resultClass="String">
+		select to_char(sysdate, 'hh24:mi') from dual
+
+	</select>
+	
+	<select id="checkATT" resultClass="int">
+		select count(*) from day where 
+		day_empno = #day_empno# and day_today = #day_today#
+	</select>
+
+	<select id="getCuratt" resultClass="spring.emp.DayDTO">
+		select * from day where 
+		day_empno = #day_empno# and day_today = #day_today#
+	</select>
+	
+	<select id="getToday" resultClass="String">
+		select to_char(sysdate, 'yyyy/mm/dd') from dual
+
+	</select>
+	
+		<select id="getFinishTime" resultClass="String">
+		select task_finish from overtask where
+		 task_empno = #empno# and 
+		 task_startday = #startday# and
+		  task_start = #start#
+
+	</select>
+	
+
+	<delete id="deleteDayRecord" parameterClass="spring.emp.DayDTO">
+		DELETE FROM day
+		WHERE day_id = #day_id#
+	</delete>
+	
+	<insert id="insertVacation" parameterClass="spring.emp.DayDTO">
+		INSERT INTO day (
+			day_empno, day_empname, 
+			day_today, day_vacation, day_id,
+			day_depno, day_jobno
+		) 
+		VALUES(
+			#day_empno#, #day_empname#, 
+			#day_today#, 1, seq.nextval,
+			#day_depno#, #day_jobno#
+		)
+	</insert>
+	
+	<select id="empIdChk" resultClass="int">
+		select count(*) from emp where EMP_ID = #emp_id#
+	</select>
+	
+	<select id="selectVacation" parameterClass="spring.emp.EmpDTO" resultClass="spring.emp.DayDTO">
+		SELECT * FROM day 
+		WHERE day_empno = #emp_no#
+		AND day_vacation = 1
+	</select>
+	
+	<select id="selectDeptVacation" resultClass="spring.emp.DayDTO">
+		SELECT * FROM day 
+		WHERE day_depno = #emp_depno#
+		AND day_start IS NULL
+	</select>
+	
+	<!--   관리자 조회기능 -->
+	<select id="empsel" resultClass="spring.emp.EmpDTO">
+		select e.emp_no, e.emp_id, e.emp_name, j.job_name, d.dep_name,
+		e.emp_hiredate
+		from emp e, job j, dep d
+		where e.emp_jobno = j.job_no and e.emp_depno = d.dep_no
+		order by e.emp_no
+	</select>
+
+	<select id="empname" resultClass="spring.emp.EmpDTO"
+		parameterClass="spring.emp.EmpDTO">
+		select e.emp_no, e.emp_id, e.emp_name, j.job_name, d.dep_name,
+		e.emp_hiredate
+		from emp e, job j, dep d
+		where e.emp_jobno = j.job_no and e.emp_depno = d.dep_no and e.emp_name = #emp_name#
+		order by e.emp_no
+	</select>
+
+	<select id="empdep" resultClass="spring.emp.EmpDTO"
+		parameterClass="spring.emp.EmpDTO">
+		select e.emp_no, e.emp_id, e.emp_name, j.job_name, d.dep_name,
+		e.emp_hiredate
+		from emp e, job j, dep d
+		where e.emp_jobno = j.job_no and e.emp_depno = d.dep_no and d.dep_name = #dep_name#
+		order by e.emp_no
+	</select>
+
+	<select id="empsabun" resultClass="spring.emp.EmpDTO"
+		parameterClass="spring.emp.EmpDTO">
+		select e.emp_no, e.emp_id, e.emp_name, j.job_name, d.dep_name,
+		e.emp_hiredate
+		from emp e, job j, dep d
+		where e.emp_jobno = j.job_no and e.emp_depno = d.dep_no and e.emp_no = #emp_no#
+		order by e.emp_no
+	</select>
+
+     
+	<select id="getselATT" resultClass="spring.emp.DayDTO">
+ 			select d.dep_name, j.job_name, day_empno, day_empname, day_today, day_start from day, dep d, job j
+ where d.dep_no = day_depno and j.job_no = day_jobno  and day_today = #day_today# and day_empno = #day_empno# 
+</select>
+
+
+		<select id="empNumChk" resultClass="int">
+	select count(*) from emp
+	where EMP_NO = #emp_no#
+	</select>
+
+
+	<select id="infoall" resultClass="spring.emp.EmpDTO"
+	parameterClass="spring.emp.EmpDTO">
+		select * from emp where emp_depno = #emp_depno# order by emp_jobno desc
+	</select>
+	
+	<select id="info" resultClass="spring.emp.EmpDTO">
+		select DISTINCT emp_no, emp_name, emp_jobno, emp_hiredate  ,emp_depno
+		from emp
+		where emp_no= #emp_no#
+	</select>
+	
+	<select id="getDepno" resultClass="String">
+		select dep_name from dep where dep_no = #emp_depno#
+	</select>
+	
+	<select id="getJobno" resultClass="String">
+		select job_name from job where job_no = #emp_jobno#
+	</select>
+	
+		<select id="getempInfo" resultClass="spring.emp.EmpDTO">
+		select * from emp where emp_no = #emp_no#
+	</select>
+	
+	<select id="selectAttendance" 
+		resultClass="spring.emp.DayDTO"
+		parameterClass="spring.emp.DayDTO">
+		SELECT * FROM day 
+		WHERE day_today = #day_today#
+		AND day_start IS NOT NULL
+		AND day_depno = #day_depno# order by day_start desc
+	</select>
+</sqlMap>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<bean id="empdao" class="spring.emp.EmpDAO"/>
+	<bean id="admdao" class="spring.emp.AdmDAO"/>
+	<bean id="daydao" class="spring.emp.DayDAO"/>
+	
+	<bean name="/result.go" class="spring.main.LoginController">
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+		<property name="commandClass" value="spring.emp.EmpDTO"/>
+	</bean>
+
+	<bean name="/attend.go" class="spring.main.AttendController">
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+
+	</bean>
+	
+	<bean name="/attendview.go" class="spring.main.AttendviewController">
+	<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+	</bean>
+	
+	<bean name="/newcal.go" class="spring.main.NewcalController"/>
+	<bean name="/newtimecal.go" class="spring.main.NewtimecalController"/>
+	<bean name="/admin.go" class="spring.main.AdminController">
+		<property name="dao">
+			<ref bean="admdao"/>
+		</property>
+		<property name="commandClass" value="spring.emp.EmpDTO"/>
+	</bean>	
+	
+	
+	<bean name="/seltime.go" class="spring.main.SeltimeController">
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+	</bean>
+	
+	<bean name="/selattendall.go" class="spring.main.SelattendAllController">
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+	</bean>
+	
+	
+	
+	
+	<bean name="/applytime.go" class="spring.main.ApplytimeController">
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+	</bean>
+	
+	<bean name="/refusetask.go" class="spring.main.RefusetaskController">
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+	</bean>
+	
+	<bean name="/finishtask.go" class="spring.main.FinishtaskController">
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+	</bean>
+	
+	<bean name="/changeatt.go" class="spring.main.ChangeattController">
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+	</bean>
+	
+	<bean name="/overtaskselview.go" class="spring.main.OvertaskselviewController">
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+	</bean>
+	
+	<bean name="/overtaskinsview.go" class="spring.main.OvertaskinsviewController"/>
+	
+	<bean name="/getatt.go" class="spring.main.GetattController">
+		<property name="dao">
+				<ref bean="empdao"/>
+		</property>
+		<property name="commandClass" value="spring.emp.DayDTO"/>
+	</bean>
+	
+	
+	
+	<bean name="/getattview.go" class="spring.main.ChangeattviewController"/>
+		
+
+	
+
+	<bean name="/overtask.go" class="spring.main.OvertaskController">
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+		<property name="commandClass" value="spring.emp.OvertaskDTO"/>
+	</bean>	
+
+	<bean name="/vacation.go" class="spring.main.VacationController"/>
+	<bean name="/multiInsertVacation.go" class="spring.main.MultiInsertDayRecordController"/>
+	<bean name="/deleteVacation.go" class="spring.main.DeleteDayRecordController"/>
+	
+	<bean name="/deptVacation.go" class="spring.main.SelectDayRecordController">
+		<property name="dao">
+			<ref bean="daydao"/>
+		</property>
+	</bean>
+	
+	<bean name="/deleteatt.go" class="spring.main.DeleteattController">
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+	</bean>
+	
+
+	<bean name="/ad_sermain.go" class="spring.main.AdMainController">
+		<property name="dao">
+				<ref bean="empdao"/>
+		</property>
+		<property name="commandClass" value="spring.emp.EmpDTO"/>
+	</bean>
+	
+	
+	
+	<bean name="/ad_attend.go" class="spring.main.AdminattendController">
+		<property name="dao">
+				<ref bean="empdao"/>
+		</property>
+		<property name="commandClass" value="spring.emp.DayDTO"/>
+	</bean>
+	
+
+	<bean name="/ad_search.go" class="spring.main.AdSearchController">
+		<property name="dao">
+				<ref bean="empdao"/>
+		</property>
+		<property name="commandClass" value="spring.emp.EmpDTO"/>
+	</bean>
+	
+	
+	<bean name="/ad_research.go" class="spring.main.AdreSearchController"/>
+	
+	
+
+
+	<bean name="/ad_insview.go" class="spring.main.AdinsviewController"/>
+	
+	
+	<bean name="/empIns.go" class="spring.main.AdinsController">
+
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+		<property name="commandClass" value="spring.emp.EmpDTO"/>
+	</bean>	
+	
+
+	
+	<bean name="/empNumChk.go" class="spring.main.adnumChkController"/>
+	
+	<bean name="/finalchkempnum.go" class="spring.main.CheckempnoController">
+		<property name="dao">
+				<ref bean="empdao"/>
+		</property>
+	
+	</bean>
+	
+	
+	<bean name="/holdontask.go" class="spring.main.HoldonTaskController">
+		<property name="dao">
+				<ref bean="empdao"/>
+		</property>
+	</bean>
+
+	<bean name="/infoall.go" class="spring.main.SelectinfoController">
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+	</bean>
+	
+	<bean name="/info.go" class="spring.main.InfoselectController">
+		<property name="dao">
+			<ref bean="empdao"/>
+		</property>
+	</bean>	
+			
+	<bean name="/mainview.go" class="spring.main.MainviewController"/>
+	<bean name="/logout.go" class="spring.main.LogoutController"/>
+		
+</beans>
