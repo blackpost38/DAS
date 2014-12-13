@@ -98,6 +98,7 @@ public class FinishtaskController implements Controller {
 		int finishInt = (60*finishHour) + finishMin;
 
 		int finalWork = finishInt - startInt;
+		if(finalWork < 0) finalWork *= -1;
 		
 		return finalWork;
 	}

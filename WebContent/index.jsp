@@ -12,7 +12,7 @@
 				today = new Date(xhr.getResponseHeader("Date"));
 				sessionStorage.setItem("today", today);
 			});
-			// 라디오 버튼에 체크를 했는지를 확인
+			// 라디오 버튼에 체크를 했는지를 확인.
 			// 체크가 안되어 있으면 경고창, 체크되어 있으면 Form Action을 취한다.
 			function check()
 			{

@@ -20,7 +20,7 @@
 				<% 
 				
 					HttpSession se = request.getSession();
-					List<DayDTO>list = (List)se.getAttribute("list");
+					List<DayDTO> list = (List)se.getAttribute("list");
 					List<DayDTO> listVacation = (List)se.getAttribute("listVacation");
 					
 				%>
