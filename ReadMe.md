@@ -30,8 +30,8 @@
 - OS: Window7
 - Front-end: HTML5, BootStrap 2.3.2, jQuery 1.10.1
 - Back-end: Spring Framework 3.0.2, iBatis 2.3.4
-- DB: Oracle10g
-- Server: Tomcat 6.0 -> *현재는 MySQL로 커스터마이징 하였습니다.*
+- DB: Oracle10g -> *현재는 MySQL로 커스터마이징 하였습니다.*
+- Server: Tomcat 6.0
 
 ![캡처1](img/14.001.png)
 ![캡처2](img/14.002.png)
